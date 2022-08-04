@@ -14,12 +14,12 @@ function App() {
 
     const config: AxiosRequestConfig = {
         headers: {
-            Authorization: "Basic " +  btoa(username + ":" + password)
+            Authorization: "Basic " + btoa(username + ":" + password)
         }
     }
 
     const checkIfLogin = () => {
-        axios.get("/user/me")
+        axios.get("/api/users/me")
             .then((response) => {
                 setUser(response.data)
             })
@@ -29,20 +29,18 @@ function App() {
     }
 
     const login = () => {
-        axios.get("/user/me", config)
+        axios.get("/api/users/login", config)
             .then((response) => {
                 setUser(response.data)
-            })
-            .catch(() => {
-                setUser(undefined)
             })
     }
 
     const logout = () => {
-        setUser(undefined)
-        localStorage.removeItem("JSESSIONID")
-        console.log(document.cookie)
-
+        axios.get("/api/users/logout")
+            .then((response) => {
+                setUser(undefined)
+                checkIfLogin()
+            })
     }
 
     const get = () => {
